@@ -22,24 +22,40 @@ public class ShortestPath {
 	private final static char visited='"';
 	
 	public static Position startPosition;
+	public static Position endPosition;
+	
+	public  String mapPath[][];
+	
+
+	
+	public ShortestPath() throws IOException {
+		
+		FileManipulation fileMan = new FileManipulation();
+		
+		String mapPath[][]= fileMan.readFromFileInto2DArray();
+		
+	}
+	
+	
+	
 	
 	
 	
 	
 	public static void main(String [] args) throws IOException {
-		
-		
-		
 		FileManipulation fileMan = new FileManipulation();
-		String [][] filecontents = fileMan.readFromFileInto2DArray();
+		ShortestPath p =new ShortestPath();
+		p.mapPath = fileMan.readFromFileInto2DArray();
 		
-		Map <Integer, Integer> startindex = getIndexForStart(filecontents);
+		
+		
+		Map <Integer, Integer> startindex = getIndexForStart(p.getMap());
 		
 		//System.out.println(Arrays.asList(startindex));
 		
 		//displayContents(filecontents);
 		
-		computeTheShortestPath(startindex,filecontents);
+		computeTheShortestPath(p.getMap());
 
 	} 
 		
@@ -68,31 +84,32 @@ public class ShortestPath {
 }
 	
 	
-	public static void computeTheShortestPath(Map<Integer, Integer>   start,String [][] filecontents) {
+	public static void computeTheShortestPath(String [][] filecontents) {
 	
 		System.out.println();
 		System.out.println("Determining the shotest path");
 		System.out.println();
+
+		System.out.println("Start position-(S): "+ getIndexForStart(filecontents));
+		System.out.println("End position-(E): "+ getIndexForEnd(filecontents));
 		
-		//System.out.println(start.size());
 		
-		for(int row= startPosition.getX(); row<filecontents.length; row++) {
+		for(int row= startPosition.getRow(); row<filecontents.length; row++) {
 			
-			for(int column=startPosition.getY()+1;column<filecontents[row].length; column++ ) {
+			for(int column=startPosition.getColumn();column<filecontents[row].length; column++ ) {
 				
+				System.out.println(filecontents[row][column]);
 				
-				if(filecontents[row][column].equals(CLEAR_PATH)) {
+				if(filecontents[row][column].equals(WALL)) { // testing if the position is a wall 
 					
-					//System.out.print("match found");
+					//filecontents[row][column] = String.valueOf(visited);
 					
-					filecontents[row][column] = String.valueOf(visited);
+				}else if(filecontents[row][column].equals(CLEAR_PATH)) {
 					
-				}else if(filecontents[row][column].equals(WALL)) {
+					filecontents[row][column] =  String.valueOf(visited);
+					//displayContents(filecontents);
 					
-					System.out.print("Hit the wall"); 
-					displayContents(filecontents);
-					
-					return;
+					//return;
 				}
 				
 				
@@ -111,11 +128,70 @@ public class ShortestPath {
 		
 	}
 	
-	public static void displayContents(String [][] filecontents) {
-		System.out.println();
-		System.out.println("Displaying th current contents in the 2D Array");
-		System.out.println();
+	/*
+	 * Method - marks the position as visited
+	 * @param - row and column values
+	 * 
+	 */
+	
+	public void setAsVisited(int row, int column) {
+		mapPath[row][column] = String.valueOf(VISITED);
+	}
+	
+	
+	
+	/*
+	 * Method - checks if the certain position is a WALL
+	 * @param - row and column values
+	 * 
+	 */
+	public boolean isAWall(int row, int column) {
+		return mapPath[row][column].equals(WALL);
 		
+	}
+	
+	
+	/*
+	 * Method - checks if the certain position has been visited
+	 * @param - row and column values
+	 * 
+	 */
+	public boolean isVisited(int row, int column) {
+		
+		return mapPath[row][column].equals(String.valueOf(VISITED));
+		
+	}
+	
+	
+	/*
+	 * Method - gets the position of "E" in the map
+	 * @param -
+	 * 
+	 */
+	public  static Map<Integer, Integer>   getIndexForEnd(String [][] filecontents) {
+		Map <Integer, Integer> startIndex = new HashMap<Integer,Integer>();
+		
+		for(int row=0; row<filecontents.length;row++) {
+			
+			for(int column =0; column <filecontents[row].length; column++) {
+				
+				if(filecontents[row][column].equals(END)) {
+					
+					endPosition = new Position(row, column);
+					startIndex.put(row, column);
+				}
+				
+			}
+		}
+		
+		return startIndex;
+		
+}
+	
+	
+	
+	
+	public static void displayContents(String [][] filecontents) {
 		for(int i=0; i<filecontents.length;i++) {
 			for(int j=0; j<filecontents[i].length; j++) {
 				System.out.print(filecontents[i][j]);
@@ -123,4 +199,19 @@ public class ShortestPath {
 			System.out.println();
 		}
 	}
+	
+	public String[][] getMap(){
+		
+		return mapPath;
+	}
+	
+	
+	
+	public void initiazeTheMap() throws IOException {
+		FileManipulation fileMan = new FileManipulation();
+		String mapPath[][]= fileMan.readFromFileInto2DArray();
+	}
+	
+	
+	
 }

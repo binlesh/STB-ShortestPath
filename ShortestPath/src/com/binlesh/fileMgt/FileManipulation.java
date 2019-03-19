@@ -1,20 +1,23 @@
 package com.binlesh.fileMgt;
 
 import java.io.BufferedReader;
+
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Scanner;
-/*
+
+
+/*The class that work with Map manipulations- reading & writing
  * @author -Lesego Mosweu
  * 
  * 
  */
 public class FileManipulation {
+	
+	//path to the file
 	private String filePath = "";
 	
 	public FileManipulation() {
-		
-		
 		//initialize the variables - file source
 		filePath = "map (2).txt"; 
 	}
@@ -23,7 +26,7 @@ public class FileManipulation {
 	
 	
 	/*
-	 * 
+	 * Building maze/graph using 2 dimensional array
 	 * 
 	 * 
 	 * 
@@ -41,8 +44,6 @@ public class FileManipulation {
 		String [] strLine; 
 		
 		while(scanner.hasNextLine()) {
-			
-			
 			
 			for(int i=0; i<filecontents.length;i++) {
 				
@@ -63,7 +64,7 @@ public class FileManipulation {
 	}
 	
 	
-	/*
+	/* 
 	 * 
 	 * 
 	 * 
