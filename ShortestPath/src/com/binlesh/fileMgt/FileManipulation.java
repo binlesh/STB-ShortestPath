@@ -13,7 +13,10 @@ public class FileManipulation {
 	private String filePath = "";
 	
 	public FileManipulation() {
-		filePath = "map (2).txt";
+		
+		
+		//initialize the variables - file source
+		filePath = "map (2).txt"; 
 	}
 	
 	
